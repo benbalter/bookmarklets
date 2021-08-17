@@ -1,0 +1,1 @@
+"use strict";var t,e=document.location.href,c=e.match(/\d+$/);c&&(t=(parseInt(c[0])+1).toString(),document.location.href=e.replace(c[0],t));
