@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": [],
+    "lib": ["dom", "es2017"],
+    "strict": true,
+  },
+  "include": ["bookmarklets/*/src"],
+}
