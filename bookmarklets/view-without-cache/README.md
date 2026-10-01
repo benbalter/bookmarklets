@@ -1,6 +1,8 @@
-# View without cache bookmarklet
+# View without cache
 
 Reloads the current page with a unique `dontCache` query parameter so caches see a URL they haven't stored and the server sends a fresh copy.
+
+**Install:** drag the button at [ben.balter.com/bookmarklets/#view-without-cache](https://ben.balter.com/bookmarklets/#view-without-cache) to your bookmarks bar.
 
 ## Why
 
@@ -20,21 +22,7 @@ The bookmarklet sets `dontCache` to the current Unix timestamp in milliseconds a
 
 It only helps with caches keyed on the full URL, which covers most CDNs and proxies. A cache that ignores the query string will still serve the cached page.
 
-## Usage
-
-1. Visit [ben.balter.com/bookmarklets](https://ben.balter.com/bookmarklets/#view-without-cache)
-2. Drag the "View without cache" link to your bookmark bar
-3. Click the bookmarklet on any page to reload it without the cache
-
-## Developing locally
-
-I'd love your help making the script better. The source lives in `src` and the built files live in `dist`. To build locally:
-
-1. Clone down the repo and `cd` into the directory
-2. `npm install`
-3. Make your changes
-4. `npm test` to type check, lint, build, and run the tests
-5. `script/build` to rebuild `dist/bookmark.js` and `index.md`, and commit both
+Source: [`src/bookmark.ts`](src/bookmark.ts). Tests: [`test/`](test/).
 
 ## History
 

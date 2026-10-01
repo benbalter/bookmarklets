@@ -1,32 +1,13 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import ts from 'typescript'
-import { JSDOM } from 'jsdom'
+import { fixture as load, runInPage } from '../../../test/helpers.mjs'
 
-const source = ts.transpileModule(
-  readFileSync(new URL('../src/bookmark.ts', import.meta.url), 'utf8'),
-  { compilerOptions: { target: ts.ScriptTarget.ES2022 } },
-).outputText
+const fixture = (name) => load('copy-issue-link', name)
 
-const fixture = (name) => readFileSync(new URL(`fixtures/${name}.html`, import.meta.url), 'utf8')
-
-// Runs the bookmarklet against the given page and returns what it copied
+// Runs the built bookmarklet against the given page and returns what it copied
 // and what the toast said once the clipboard promise settles.
-async function run({ html = '<!DOCTYPE html><title>x</title>', url, title, clipboard = 'ok' }) {
-  const dom = new JSDOM(html, { url, runScripts: 'outside-only' })
-  const { window } = dom
-  if (title !== undefined) window.document.title = title
-  const copied = []
-  const clip = clipboard === 'missing' ? undefined : {
-    writeText: (text) => {
-      copied.push(text)
-      return clipboard === 'reject' ? Promise.reject(new Error('denied')) : Promise.resolve()
-    },
-  }
-  Object.defineProperty(window.navigator, 'clipboard', { value: clip, configurable: true })
-  window.eval(source)
-  await new Promise((resolve) => setTimeout(resolve, 10))
+async function run(options) {
+  const { copied, window } = await runInPage('copy-issue-link', options)
   const toasts = [...window.document.querySelectorAll('div')].filter((d) => d.style.zIndex === '2147483647')
   return { copied, toast: toasts.map((t) => t.textContent).join('\n'), window }
 }

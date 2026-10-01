@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Type check
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Rebuild dist from source
+        run: |
+          rm -rf dist
+          npm run build
+      - name: Verify committed dist is up to date
+        run: |
+          git diff --exit-code dist/
+          untracked="$(git status --porcelain dist/)"
+          if [ -n "$untracked" ]; then
+            echo "::error::dist/ has uncommitted files. Run npm run build and commit dist/."
+            echo "$untracked"
+            exit 1
+          fi
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium and Firefox
+        run: npx playwright install --with-deps chromium firefox
+      # Runs the committed dist/, the code the site serves.
+      - name: Browser tests
+        run: npm run test:browser

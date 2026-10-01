@@ -1,21 +1,9 @@
-// Runs the built bookmarklet (dist/bookmark.js) against a fake
-// document.location, so the tests cover the exact code that ships.
+// Runs the built bookmarklet (dist/increment-url.js) against a fake document.location.
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
-import { runInNewContext } from "node:vm"
+import { navigate } from "../../../test/helpers.mjs"
 
-const code = readFileSync(new URL("../dist/bookmark.js", import.meta.url), "utf8")
-
-const run = (href) => {
-  let navigatedTo = null
-  const location = {
-    get href() { return href },
-    set href(value) { navigatedTo = value },
-  }
-  runInNewContext(code, { document: { location } })
-  return navigatedTo
-}
+const run = (href) => navigate("increment-url", href)
 
 test("increments the trailing number", () => {
   assert.equal(run("https://example.com/posts/41"), "https://example.com/posts/42")

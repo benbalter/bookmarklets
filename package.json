@@ -1,0 +1,38 @@
+{
+  "name": "bookmarklets",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ben Balter's bookmarklets: copy a GitHub issue link, increment a URL, view without cache, and toggle between a GitHub Pages site and its source",
+  "homepage": "https://ben.balter.com/bookmarklets/",
+  "scripts": {
+    "build": "node script/build.mjs",
+    "lint": "eslint .",
+    "fix": "eslint . --fix",
+    "typecheck": "tsc",
+    "test": "npm run build && node --test \"test/*.test.mjs\" \"bookmarklets/*/test/*.test.mjs\"",
+    "test:unit": "node --test \"test/*.test.mjs\" \"bookmarklets/*/test/*.test.mjs\"",
+    "test:browser": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbalter/bookmarklets"
+  },
+  "author": "Ben Balter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benbalter/bookmarklets/issues"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.6",
+    "@babel/preset-env": "^8.0.6",
+    "@babel/preset-typescript": "^8.0.1",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "eslint": "^10.11.0",
+    "globals": "^17.0.0",
+    "jsdom": "^30.1.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "uglify-js": "^3.19.3"
+  }
+}

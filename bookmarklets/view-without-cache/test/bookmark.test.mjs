@@ -1,22 +1,13 @@
-// Runs the built bookmarklet (dist/bookmark.js) against a fake
-// document.location, so the tests cover the exact code that ships.
+// Runs the built bookmarklet (dist/view-without-cache.js) against a fake document.location.
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
-import { runInNewContext } from "node:vm"
-
-const code = readFileSync(new URL("../dist/bookmark.js", import.meta.url), "utf8")
+import { navigate } from "../../../test/helpers.mjs"
 
 // Returns the URL the bookmarklet navigated to, with the timestamp swapped
 // for "<now>" after checking it's the current time.
 const run = (href) => {
-  let navigatedTo = null
-  const location = {
-    get href() { return href },
-    set href(value) { navigatedTo = value },
-  }
   const before = Date.now()
-  runInNewContext(code, { URL, document: { location } })
+  const navigatedTo = navigate("view-without-cache", href)
   const after = Date.now()
   assert.notEqual(navigatedTo, null, "bookmarklet should navigate")
   return navigatedTo.replace(/([?&]dontCache=)(\d+)/g, (_, prefix, stamp) => {

@@ -1,38 +1,26 @@
-location = window.location
-host = location.hostname
-path = location.pathname
+(() => {
+  // Toggle between a GitHub Pages site and the repository that publishes it,
+  // by rewriting the URL. The query string and hash are ignored, and nothing
+  // happens on any other host (including Pages sites on custom domains).
+  const { hostname, pathname } = new URL(document.location.href)
+  const segments = pathname.split("/").filter(Boolean)
 
-# Source -> Site
-if host == "github.com"
-  parts = path.split("/")
-  owner = parts[1]
-  repo  = parts[2]
-  url   = "http://#{owner}.github.io"
+  // Source -> site: github.com/<owner>/<repo>/...
+  if (hostname === "github.com") {
+    const [owner, repo] = segments
+    if (!owner || !repo) return
+    const host = `${owner.toLowerCase()}.github.io`
+    // <owner>.github.io (or the legacy <owner>.github.com) is a user site
+    const name = repo.toLowerCase()
+    const userSite = name === host || name === `${owner.toLowerCase()}.github.com`
+    document.location.href = `https://${host}/${userSite ? "" : `${repo}/`}`
+    return
+  }
 
-  # User page
-  if repo.match /^#{owner}\.github\.(io|com)$/i
-    window.location = url
-
-  # Project page
-  else
-    window.location = "#{url}/#{repo}"
-
-# Site -> Source
-else if host.match(/[a-z0-9-]+\.github\.(io|com)$/i)
-  parts = host.split(".")
-  owner = parts[0]
-
-  # GitHub-owned page
-  if parts[2] == "com"
-    owner = "github"
-    repo  = "#{parts[0]}.github.com"
-
-  # User page
-  else if path == "/"
-    repo = "#{owner}.github.io"
-
-  # Project page
-  else
-    repo = path.split("/")[1]
-
-  window.location = "https://github.com/#{owner}/#{repo}"
+  // Site -> source: <owner>.github.io/<repo>/... (or the user site's root)
+  const match = hostname.match(/^([a-z0-9-]+)\.github\.io$/i)
+  if (!match) return
+  const owner = match[1]
+  const repo = segments[0] || `${owner}.github.io`
+  document.location.href = `https://github.com/${owner}/${repo}`
+})()
