@@ -18,7 +18,7 @@ If the URL doesn't end in a number (including a trailing `/` or `#hash`), nothin
 
 ## Usage
 
-1. Visit [ben.balter.com/increment-url-bookmarklet](https://ben.balter.com/increment-url-bookmarklet/)
+1. Visit [ben.balter.com/bookmarklets](https://ben.balter.com/bookmarklets/#increment-url)
 2. Drag the link to your bookmark bar
 3. Click the bookmarklet on a page whose URL ends in a number to go to the next one
 
