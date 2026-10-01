@@ -1,0 +1,1 @@
+(()=>{let o="dontCache",t=o+"="+Date.now();var e=new URL(document.location.href);let a=!1;var l=e.search.slice(1).split("&").filter(Boolean).map(e=>e.split("=")[0]!==o?e:(a=!0,t));a||l.push(t),e.search=l.join("&"),document.location.href=e.href})();

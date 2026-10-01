@@ -1,0 +1,32 @@
+{
+  "name": "view-without-cache-bookmarklet",
+  "version": "0.0.1",
+  "description": "Reloads the current page with a cache-busting query parameter.",
+  "main": "dist/bookmark.js",
+  "scripts": {
+    "build": "babel src/bookmark.ts --out-file dist/bookmark.js && npm run minify",
+    "minify": "uglifyjs dist/bookmark.js --compress --mangle toplevel=true --output dist/bookmark.js",
+    "test": "tsc && eslint ./src && npm run build && node --test",
+    "fix": "eslint ./src --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbalter/view-without-cache-bookmarklet"
+  },
+  "author": "Ben Balter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benbalter/view-without-cache-bookmarklet/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.6",
+    "@babel/preset-env": "^8.0.6",
+    "@babel/preset-typescript": "^8.0.1",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "uglify-js": "^3.19.3"
+  }
+}
