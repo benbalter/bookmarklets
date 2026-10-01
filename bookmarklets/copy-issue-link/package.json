@@ -1,0 +1,33 @@
+{
+  "name": "copy-issue-link-bookmarklet",
+  "version": "0.0.1",
+  "description": "Copies a Markdown link to the GitHub issue, pull request, or discussion you're viewing",
+  "main": "dist/bookmark.js",
+  "scripts": {
+    "build": "babel src/bookmark.ts --out-file dist/bookmark.js && npm run minify",
+    "minify": "uglifyjs dist/bookmark.js --compress --mangle toplevel=true --output dist/bookmark.js",
+    "test": "tsc && eslint ./src && node --test test/*.test.mjs",
+    "fix": "eslint ./src --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbalter/copy-issue-link-bookmarklet"
+  },
+  "author": "Ben Balter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benbalter/copy-issue-link-bookmarklet/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.6",
+    "@babel/preset-env": "^8.0.6",
+    "@babel/preset-typescript": "^8.0.1",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "jsdom": "^30.1.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "uglify-js": "^3.19.3"
+  }
+}
